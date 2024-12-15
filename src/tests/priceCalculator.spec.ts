@@ -1,5 +1,6 @@
 import priceCalculator from "../priceCalculator"
 import {Brand, CartItem, Product, ProductType} from "../types"
+import { createMock } from 'ts-auto-mock';
 
 describe('Price Calculator', () => {
     describe('given an empty cart', () => {
@@ -49,4 +50,47 @@ describe('Price Calculator', () => {
             })
         })
     })
+
+    describe('Given a cart with two product', () => { 
+        describe('When the first product has discount', () => { 
+            describe('And the second product is of type REGULAR_GOODS', () => { 
+                // Arrange 
+                const firstProduct = createMock<Product>({
+                    discount: {
+                        isEnabled: true,
+                        percentage: 50
+                    },
+                    type: ProductType.EDUCATION
+                })
+                
+                const secondProduct = createMock<Product>({
+                    type: ProductType.REGULAR_GOODS
+                })
+
+                const firstItem:CartItem = {
+                    product: firstProduct,
+                    quantity: 1
+                }
+
+                const secondItem:CartItem = {
+                    product: secondProduct,
+                    quantity: 1
+                }
+                const testCart = {
+                    items: [secondItem, firstItem] as CartItem[]
+                }
+
+                it("The price is calculated correctly", () => {
+                    const result = priceCalculator(testCart)
+                    const net_price = firstProduct.net_price + secondProduct.net_price
+                    const expectedResult = {
+                        net_price,
+                        gross_price: firstProduct.net_price + secondProduct.net_price * 1.2,
+                        gross_price_discounted: firstProduct.net_price * 0.5 + secondProduct.net_price * 1.2
+                    }
+                    expect(result).toEqual(expectedResult)
+                })
+             })
+         })
+     })
 })

@@ -17,5 +17,16 @@ module.exports = {
       "lines": 80,
       "statements": 80
     }
-  }
+  },
+  "transform": {
+    ".(ts|tsx)": "ts-jest"
+  },
+  "globals": {
+    "ts-jest": {
+      "compiler": "ttypescript"
+    }
+  },
+  "setupFiles": [
+    "<rootDir>config.ts"
+  ]
 };

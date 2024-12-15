@@ -9,7 +9,13 @@
     "outDir": "dist",
     "allowJs": false,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "plugins": [
+        {
+          "transform": "ts-auto-mock/transformer",
+          "cacheBetweenTests": false
+        }
+      ]
     },
     "include": ["src/**/*.ts"],
     "exclude": ["dist"]
